@@ -5,7 +5,9 @@ import org.testng.annotations.DataProvider;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Test(groups={"func"})
 public class HttpResponseImplTest {
@@ -48,6 +50,23 @@ public class HttpResponseImplTest {
 
         res = new HttpResponseImpl(statusCode, reasonPhrase);
         assert res.getBodyAsString() == null;
+    }
+
+    @Test(dataProvider = "headerSpellings")
+    public void testCaseSensitivity(String name, String value, String expected) {
+        HttpResponseImpl res = new HttpResponseImpl(200, "OK");
+        Map<String, String> headers = new HashMap<String, String>();
+        headers.put(name, value);
+        res.setHeaders(headers);
+        assert res.sniffCharacterEncoding().equals(expected);
+    }
+
+    @DataProvider(name = "headerSpellings")
+    public String[][] getHeaderSpellings() {
+        return new String[][]{
+                { "content-type", ";charset=ISO-8859-1", "ISO-8859-1" },
+                { "Content-Type", ";charset=ISO-8859-1", "ISO-8859-1" },
+        };
     }
 
     @Test(dataProvider = "sampleEncodings")

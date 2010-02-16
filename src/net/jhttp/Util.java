@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
+import java.util.Map;
 
 class Util {
     
@@ -87,5 +88,19 @@ class Util {
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    static String getIgnoreCase(Map<String, String> dict, String key) {
+        if (dict.containsKey(key)) {
+          return dict.get(key);
+        }
+
+        for (String name : dict.keySet()) {
+          if (name.equalsIgnoreCase(key)) {
+            return dict.get(name);
+          }
+        }
+
+        return null;
     }
 }

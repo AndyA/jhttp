@@ -1,5 +1,6 @@
 package net.jhttp;
 
+import static net.jhttp.Util.getIgnoreCase;
 import static net.jhttp.Util.string;
 
 import java.nio.ByteBuffer;
@@ -76,7 +77,7 @@ class HttpResponseImpl implements HttpResponse {
         if (headers == null) {
             return "UTF-8";
         } else {
-            String contentType = headers.get("Content-Type");
+            String contentType = getIgnoreCase(headers, "Content-Type");
             return sniffCharacterEncoding(contentType);
         }
     }
