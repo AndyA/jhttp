@@ -40,29 +40,6 @@ class HttpRequestImpl implements HttpRequest {
         } else {
             this.headers = new HashMap<String, String>(2);
         }
-
-        ensureHostHeader();
-    }
-
-    private void ensureHostHeader() {
-        boolean hostSet = false;
-        for (String header : headers.keySet()) {
-            if (header == null) { continue; }
-            if (!header.equalsIgnoreCase("Host")) { continue; }
-            
-            String value = headers.get(header);
-            if (value != null) {
-                hostSet = true;
-                break;
-            }
-        }
-        if (!hostSet) {
-            if (port == -1) {
-                headers.put("Host", host);
-            } else {
-                headers.put("Host", host + ":" + port);
-            }
-        }
     }
 
     public String getProtocol() {

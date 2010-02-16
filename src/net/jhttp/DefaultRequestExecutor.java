@@ -92,7 +92,13 @@ class DefaultRequestExecutor implements RequestExecutor {
             }
         }
 
-        if (!hostSet) { header(os, "Host", req.getHost()); }
+        if (!hostSet) {
+            int port = req.getPort();
+            header(os, "Host", 
+                -1 == port ? req.getHost()
+                           : req.getHost() + ":" + port);
+        }
+
         if (!contentLengthSet) { header(os, "Content-Length", "0"); }
         if (!connectionSet) { header(os, "Connection", "close"); }
         if (!userAgentSet) { header(os, "User-Agent", "jhttp/0.1.0"); }
